@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Calculatrice</string>
+    <string name="empty_field">Cannot calculate empty field</string>
+</resources>
