@@ -11,8 +11,9 @@ public class MainActivity extends AppCompatActivity {
     Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
     Button btn0, btnDot, btnPlus, btnMinus, btnMultiply, btnDivide;
     Button btnEqual, btnClean, btnErase;
-    TextView calc, result;
+    TextView calc, show_result;
     String calculate = "";
+    double result = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         btnErase = findViewById(R.id.btnErase);
 
         // Show
-        result = findViewById(R.id.result);
+        show_result = findViewById(R.id.show_result);
         calc = findViewById(R.id.calc);
 
         // Numbers Click Listeners
@@ -132,8 +133,16 @@ public class MainActivity extends AppCompatActivity {
         btnDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculate += ".";
-                calc.setText(calculate);
+                String[] arrayCalc = calculate.split(" ");
+                String lastCalc = arrayCalc[arrayCalc.length - 1];
+                if (!lastCalc.contains(".")) {
+                    if (calculate.endsWith(" ") || calculate.isEmpty()) {
+                        calculate += "0.";
+                    } else {
+                        calculate += ".";
+                    }
+                    calc.setText(calculate);
+                }
             }
         });
 
@@ -142,9 +151,17 @@ public class MainActivity extends AppCompatActivity {
         btnErase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int index = calculate.length();
-                calculate = calculate.substring(0, index - 1);
-                calc.setText(calculate);
+                if (!calculate.isEmpty()) {
+                    int index = calculate.length();
+                    if (calculate.endsWith(" ")) {
+                        calculate = calculate.substring(0, index - 3);
+                    } else if (calculate.endsWith("ans")) {
+                        calculate = calculate.substring(0, index - 3);
+                    } else {
+                        calculate = calculate.substring(0, index - 1);
+                    }
+                    calc.setText(calculate);
+                }
             }
         });
 
@@ -160,12 +177,12 @@ public class MainActivity extends AppCompatActivity {
         btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean is_number = false;
-                int i = 9;
                 if (calculate.endsWith(".")) {
                     int index = calculate.length();
                     calculate = calculate.substring(0, index - 1);
                 }
+                boolean is_number = false;
+                int i = 9;
                 while(i >= 0) {
                     if (calculate.endsWith(String.valueOf(i))) {
                         is_number = true;
@@ -175,6 +192,9 @@ public class MainActivity extends AppCompatActivity {
                 if (!calculate.isEmpty() && is_number)  {
                     calculate = calculate + " + ";
                     calc.setText(calculate);
+                } else if (calculate.isEmpty() && result != 0) {
+                    calculate = "ans + ";
+                    calc.setText(calculate);
                 }
             }
         });
@@ -182,6 +202,10 @@ public class MainActivity extends AppCompatActivity {
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (calculate.endsWith(".")) {
+                    int index = calculate.length();
+                    calculate = calculate.substring(0, index - 1);
+                }
                 boolean is_number = false;
                 int i = 9;
                 while(i >= 0) {
@@ -193,6 +217,9 @@ public class MainActivity extends AppCompatActivity {
                 if (!calculate.isEmpty() && is_number)  {
                     calculate = calculate + " - ";
                     calc.setText(calculate);
+                } else if (calculate.isEmpty() && result != 0) {
+                    calculate = "ans - ";
+                    calc.setText(calculate);
                 }
             }
         });
@@ -200,6 +227,10 @@ public class MainActivity extends AppCompatActivity {
         btnMultiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (calculate.endsWith(".")) {
+                    int index = calculate.length();
+                    calculate = calculate.substring(0, index - 1);
+                }
                 boolean is_number = false;
                 int i = 9;
                 while(i >= 0) {
@@ -211,6 +242,9 @@ public class MainActivity extends AppCompatActivity {
                 if (!calculate.isEmpty() && is_number)  {
                     calculate = calculate + " X ";
                     calc.setText(calculate);
+                } else if (calculate.isEmpty() && result != 0) {
+                    calculate = "ans X ";
+                    calc.setText(calculate);
                 }
             }
         });
@@ -218,6 +252,10 @@ public class MainActivity extends AppCompatActivity {
         btnDivide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (calculate.endsWith(".")) {
+                    int index = calculate.length();
+                    calculate = calculate.substring(0, index - 1);
+                }
                 boolean is_number = false;
                 int i = 9;
                 while(i >= 0) {
@@ -229,6 +267,9 @@ public class MainActivity extends AppCompatActivity {
                 if (!calculate.isEmpty() && is_number)  {
                     calculate = calculate + " / ";
                     calc.setText(calculate);
+                } else if (calculate.isEmpty() && result != 0) {
+                    calculate = "ans / ";
+                    calc.setText(calculate);
                 }
             }
         });
@@ -237,17 +278,133 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean canCalcul = true;
-                String[] calcArray = calculate.split(" ");
                 if (calculate.isEmpty()) {
                     canCalcul = false;
-                    result.setText(getResources().getString(R.string.empty_field));
-                }
-                if (canCalcul) {
-                    for (String singleCalc: calcArray) {
-
+                    show_result.setText("0");
+                } else if (calculate.contains(" / 0")) {
+                    if (!calculate.contains(" / 0.")) {
+                        canCalcul = false;
+                        show_result.setText(getResources().getString(R.string.divide_zero));
                     }
                 }
-
+                if (canCalcul) {
+                    if (calculate.endsWith(" ")) {
+                        calculate = calculate.substring(0, calculate.length() - 3);
+                    }
+                    boolean double_spotted = calculate.contains(".");
+                    String[] calcArray = calculate.split(" ");
+                    if (calcArray.length == 1) {
+                        if (double_spotted) {
+                            show_result.setText(calcArray[0]);
+                        } else {
+                            show_result.setText(String.valueOf((int) Double.parseDouble(calcArray[0])));
+                        }
+                    } else if (calcArray.length == 3) {
+                        if (calculate.contains("ans")) {
+                            switch (calcArray[1]) {
+                                case "+":
+                                    result = result + Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "-":
+                                    result = result - Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "X":
+                                    result = result * Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "/":
+                                    result = result / Double.parseDouble(calcArray[2]);
+                                    break;
+                                default:
+                                    show_result.setText(getResources().getString(R.string.unknown_error));
+                            }
+                        } else {
+                            switch (calcArray[1]) {
+                                case "+":
+                                    result = Double.parseDouble(calcArray[0]) + Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "-":
+                                    result = Double.parseDouble(calcArray[0]) - Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "X":
+                                    result = Double.parseDouble(calcArray[0]) * Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "/":
+                                    result = Double.parseDouble(calcArray[0]) / Double.parseDouble(calcArray[2]);
+                                    break;
+                                default:
+                                    show_result.setText(getResources().getString(R.string.unknown_error));
+                            }
+                        }
+                        if (!double_spotted || String.valueOf(result).endsWith(".0")) {
+                            show_result.setText(String.valueOf((int) result));
+                        } else {
+                            show_result.setText(String.valueOf(result));
+                        }
+                    } else {
+                        if (calculate.contains("ans")) {
+                            switch (calcArray[1]) {
+                                case "+":
+                                    result = result + Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "-":
+                                    result = result - Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "X":
+                                    result = result * Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "/":
+                                    result = result / Double.parseDouble(calcArray[2]);
+                                    break;
+                                default:
+                                    show_result.setText(getResources().getString(R.string.unknown_error));
+                            }
+                        } else {
+                            switch (calcArray[1]) {
+                                case "+":
+                                    result = Double.parseDouble(calcArray[0]) + Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "-":
+                                    result = Double.parseDouble(calcArray[0]) - Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "X":
+                                    result = Double.parseDouble(calcArray[0]) * Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "/":
+                                    result = Double.parseDouble(calcArray[0]) / Double.parseDouble(calcArray[2]);
+                                    break;
+                                default:
+                                    show_result.setText(getResources().getString(R.string.unknown_error));
+                            }
+                        }
+                        int k = 3;
+                        while (k < calcArray.length) {
+                            switch (calcArray[k]) {
+                                case "+":
+                                    result = result + Double.parseDouble(calcArray[k + 1]);
+                                    break;
+                                case "-":
+                                    result = result - Double.parseDouble(calcArray[k + 1]);
+                                    break;
+                                case "X":
+                                    result = result * Double.parseDouble(calcArray[k + 1]);
+                                    break;
+                                case "/":
+                                    result = result / Double.parseDouble(calcArray[k + 1]);
+                                    break;
+                                default:
+                                    show_result.setText(getResources().getString(R.string.unknown_error));
+                            }
+                            if (!double_spotted || String.valueOf(result).endsWith(".0")) {
+                                show_result.setText(String.valueOf((int) result));
+                            } else {
+                                show_result.setText(String.valueOf(result));
+                            }
+                            k += 2;
+                        }
+                    }
+                    calculate = "";
+                    calc.setText(calculate);
+                }
             }
         });
     }

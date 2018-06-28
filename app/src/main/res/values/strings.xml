@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Calculatrice</string>
-    <string name="empty_field">Cannot calculate empty field</string>
+    <string name="divide_zero">Cannot divide by zero</string>
+    <string name="unknown_error">This is an unknown error</string>
 </resources>
