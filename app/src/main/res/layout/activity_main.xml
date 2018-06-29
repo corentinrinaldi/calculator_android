@@ -23,7 +23,7 @@
                 android:layout_gravity="fill_horizontal"
                 android:layout_rowWeight="1"
                 android:gravity="start"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/lightButton"
                 android:textSize="20sp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
@@ -44,7 +44,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@android:color/darker_gray"
             android:columnCount="4"
             android:rowCount="5" >
 
@@ -54,7 +53,8 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:text="@string/clear"
-                android:textColor="@color/clear" />
+                android:textColor="@color/clear"
+                android:background="@color/lightButton" />
 
             <Button
                 android:theme="@style/Buttons"
@@ -63,7 +63,8 @@
                 android:layout_rowWeight="1"
                 android:text="@string/divide"
                 android:textColor="@color/operations"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:background="@color/darkButton" />
 
             <Button
                 android:theme="@style/Buttons"
@@ -72,7 +73,8 @@
                 android:layout_rowWeight="1"
                 android:text="@string/multiply"
                 android:textColor="@color/operations"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:background="@color/darkButton" />
 
             <Button
                 android:theme="@style/Buttons"
@@ -80,28 +82,32 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:text="@string/erase"
-                android:textColor="@color/clear" />
+                android:textColor="@color/clear"
+                android:background="@color/lightButton" />
 
             <Button
                 android:theme="@style/Buttons"
                 android:id="@+id/btn7"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
-                android:text="@string/seven" />
+                android:text="@string/seven"
+                android:background="@android:color/darker_gray" />
 
             <Button
                 android:theme="@style/Buttons"
                 android:id="@+id/btn8"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
-                android:text="@string/eight" />
+                android:text="@string/eight"
+                android:background="@android:color/darker_gray" />
 
             <Button
                 android:theme="@style/Buttons"
                 android:id="@+id/btn9"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
-                android:text="@string/nine" />
+                android:text="@string/nine"
+                android:background="@android:color/darker_gray" />
 
             <Button
                 android:theme="@style/Buttons"
@@ -110,7 +116,8 @@
                 android:layout_rowWeight="1"
                 android:text="@string/minus"
                 android:textColor="@color/operations"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:background="@color/darkButton" />
 
             <Button
                 android:theme="@style/Buttons"
@@ -118,81 +125,63 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:gravity="center"
-                android:text="@string/four" />
+                android:text="@string/four"
+                android:background="@android:color/darker_gray" />
 
             <Button
                 android:theme="@style/Buttons"
                 android:id="@+id/btn5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_gravity="fill_horizontal"
                 android:layout_rowWeight="1"
                 android:gravity="center"
                 android:text="@string/five"
-                android:textSize="20sp" />
+                android:background="@android:color/darker_gray" />
 
             <Button
                 android:theme="@style/Buttons"
                 android:id="@+id/btn6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_gravity="fill_horizontal"
                 android:layout_rowWeight="1"
                 android:gravity="center"
                 android:text="@string/six"
-                android:textSize="20sp" />
+                android:background="@android:color/darker_gray" />
 
             <Button
                 android:theme="@style/Buttons"
                 android:id="@+id/btnPlus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_gravity="fill_horizontal"
                 android:layout_rowWeight="1"
                 android:gravity="center"
                 android:text="@string/plus"
                 android:textColor="@color/operations"
                 android:textStyle="bold"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:background="@color/darkButton" />
 
             <Button
                 android:theme="@style/Buttons"
                 android:id="@+id/btn1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_gravity="fill_horizontal"
                 android:layout_rowWeight="1"
                 android:gravity="center"
                 android:text="@string/one"
-                android:textSize="20sp" />
+                android:background="@android:color/darker_gray" />
 
             <Button
                 android:theme="@style/Buttons"
                 android:id="@+id/btn2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_gravity="fill_horizontal"
                 android:layout_rowWeight="1"
-                android:gravity="center"
                 android:text="@string/two"
-                android:textSize="20sp" />
+                android:background="@android:color/darker_gray" />
 
             <Button
                 android:theme="@style/Buttons"
                 android:id="@+id/btn3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_gravity="fill_horizontal"
                 android:layout_rowWeight="1"
-                android:gravity="center"
                 android:text="@string/three"
-                android:textSize="20sp" />
+                android:background="@android:color/darker_gray" />
 
             <Button
                 android:theme="@style/Buttons"
@@ -203,7 +192,8 @@
                 android:text="@string/equal"
                 android:textColor="@color/operations"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:background="@color/darkButton" />
 
             <Button
                 android:theme="@style/Buttons"
@@ -211,7 +201,8 @@
                 android:layout_columnSpan="2"
                 android:layout_columnWeight="2"
                 android:layout_rowWeight="1"
-                android:text="@string/zero" />
+                android:text="@string/zero"
+                android:background="@android:color/darker_gray" />
 
             <Button
                 android:theme="@style/Buttons"
@@ -219,7 +210,8 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:text="@string/dot"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:background="@android:color/darker_gray" />
         </GridLayout>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

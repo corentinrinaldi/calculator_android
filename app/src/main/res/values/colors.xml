@@ -5,4 +5,6 @@
     <color name="colorAccent">#606268</color>
     <color name="clear">#8C1D1D</color>
     <color name="operations">#286D6D</color>
+    <color name="darkButton">#3C3C3C</color>
+    <color name="lightButton">#CECDCD</color>
 </resources>
