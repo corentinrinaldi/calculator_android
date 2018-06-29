@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 
 public class ActivitePrincipale extends AppCompatActivity {
+    // Variables declaration
     Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
     Button btn0, btnDot, btnPlus, btnMinus, btnMultiply, btnDivide;
     Button btnEqual, btnClean, btnErase;
@@ -15,12 +16,225 @@ public class ActivitePrincipale extends AppCompatActivity {
     String calculate = "";
     double result = 0;
 
+    // Functions
+    public void pushDot() {
+        String[] arrayCalc = calculate.split(" ");
+        String lastCalc = arrayCalc[arrayCalc.length - 1];
+        if (!lastCalc.contains(".")) {
+            if (calculate.endsWith(" ") || calculate.isEmpty()) {
+                calculate += "0.";
+            } else {
+                calculate += ".";
+            }
+            calc.setText(calculate);
+        }
+    }
+
+    public void eraseSingle() {
+        if (!calculate.isEmpty()) {
+            int index = calculate.length();
+            if (calculate.endsWith(" ")) {
+                calculate = calculate.substring(0, index - 3);
+            } else if (calculate.endsWith("ans")) {
+                calculate = calculate.substring(0, index - 3);
+            } else {
+                calculate = calculate.substring(0, index - 1);
+            }
+            calc.setText(calculate);
+        }
+    }
+
+    public void add() {
+        if (calculate.endsWith(".")) {
+            int index = calculate.length();
+            calculate = calculate.substring(0, index - 1);
+        }
+        boolean is_number = false;
+        int i = 9;
+        while(i >= 0) {
+            if (calculate.endsWith(String.valueOf(i))) {
+                is_number = true;
+            }
+            i --;
+        }
+        if (!calculate.isEmpty() && is_number)  {
+            calculate = calculate + " + ";
+            calc.setText(calculate);
+        } else if (calculate.isEmpty() && result != 0) {
+            calculate = "ans + ";
+            calc.setText(calculate);
+        }
+    }
+
+    public void minus() {
+        if (calculate.endsWith(".")) {
+            int index = calculate.length();
+            calculate = calculate.substring(0, index - 1);
+        }
+        boolean is_number = false;
+        int i = 9;
+        while(i >= 0) {
+            if (calculate.endsWith(String.valueOf(i))) {
+                is_number = true;
+            }
+            i --;
+        }
+        if (!calculate.isEmpty() && is_number)  {
+            calculate = calculate + " - ";
+            calc.setText(calculate);
+        } else if (calculate.isEmpty() && result != 0) {
+            calculate = "ans - ";
+            calc.setText(calculate);
+        }
+    }
+
+    public void multiply() {
+        if (calculate.endsWith(".")) {
+            int index = calculate.length();
+            calculate = calculate.substring(0, index - 1);
+        }
+        boolean is_number = false;
+        int i = 9;
+        while(i >= 0) {
+            if (calculate.endsWith(String.valueOf(i))) {
+                is_number = true;
+            }
+            i --;
+        }
+        if (!calculate.isEmpty() && is_number)  {
+            calculate = calculate + " X ";
+            calc.setText(calculate);
+        } else if (calculate.isEmpty() && result != 0) {
+            calculate = "ans X ";
+            calc.setText(calculate);
+        }
+    }
+
+    public void divide() {
+        if (calculate.endsWith(".")) {
+            int index = calculate.length();
+            calculate = calculate.substring(0, index - 1);
+        }
+        boolean is_number = false;
+        int i = 9;
+        while(i >= 0) {
+            if (calculate.endsWith(String.valueOf(i))) {
+                is_number = true;
+            }
+            i --;
+        }
+        if (!calculate.isEmpty() && is_number)  {
+            calculate = calculate + " / ";
+            calc.setText(calculate);
+        } else if (calculate.isEmpty() && result != 0) {
+            calculate = "ans / ";
+            calc.setText(calculate);
+        }
+    }
+
+    public void doCalculate() {
+        boolean canCalcul = true;
+        if (calculate.isEmpty()) {
+            canCalcul = false;
+            show_result.setText("0");
+        } else if (calculate.contains(" / 0")) {
+            if (!calculate.contains(" / 0.")) {
+                canCalcul = false;
+                show_result.setText(getResources().getString(R.string.divide_zero));
+            }
+        }
+        if (canCalcul) {
+            if (calculate.endsWith(" ")) {
+                calculate = calculate.substring(0, calculate.length() - 3);
+            }
+            boolean double_spotted = calculate.contains(".");
+            String[] calcArray = calculate.split(" ");
+            if (calcArray.length == 1) {
+                if (double_spotted) {
+                    show_result.setText(calcArray[0]);
+                } else {
+                    show_result.setText(String.valueOf((int) Double.parseDouble(calcArray[0])));
+                }
+            } else {
+                int k = 0;
+                while (k < calcArray.length) {
+                    if (k == 0) {
+                        if (calculate.contains("ans")) {
+                            switch (calcArray[1]) {
+                                case "+":
+                                    result = result + Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "-":
+                                    result = result - Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "X":
+                                    result = result * Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "/":
+                                    result = result / Double.parseDouble(calcArray[2]);
+                                    break;
+                                default:
+                                    show_result.setText(getResources().getString(R.string.unknown_error));
+                            }
+                        } else {
+                            switch (calcArray[1]) {
+                                case "+":
+                                    result = Double.parseDouble(calcArray[0]) + Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "-":
+                                    result = Double.parseDouble(calcArray[0]) - Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "X":
+                                    result = Double.parseDouble(calcArray[0]) * Double.parseDouble(calcArray[2]);
+                                    break;
+                                case "/":
+                                    result = Double.parseDouble(calcArray[0]) / Double.parseDouble(calcArray[2]);
+                                    break;
+                                default:
+                                    show_result.setText(getResources().getString(R.string.unknown_error));
+                            }
+                        }
+                    } else {
+                        switch (calcArray[k]) {
+                            case "+":
+                                result = result + Double.parseDouble(calcArray[k + 1]);
+                                break;
+                            case "-":
+                                result = result - Double.parseDouble(calcArray[k + 1]);
+                                break;
+                            case "X":
+                                result = result * Double.parseDouble(calcArray[k + 1]);
+                                break;
+                            case "/":
+                                result = result / Double.parseDouble(calcArray[k + 1]);
+                                break;
+                            default:
+                                show_result.setText(getResources().getString(R.string.unknown_error));
+                        }
+                    }
+                    if (String.valueOf(result).endsWith(".0")) {
+                        show_result.setText(String.valueOf((int) result));
+                    } else {
+                        show_result.setText(String.valueOf(result));
+                    }
+                    if (k == 0) {
+                        k += 3;
+                    } else {
+                        k += 2;
+                    }
+                }
+            }
+            calculate = "";
+            calc.setText(calculate);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Numbers
+        // Numbers binding
         btn1 = findViewById(R.id.btn1);
         btn2 = findViewById(R.id.btn2);
         btn3 = findViewById(R.id.btn3);
@@ -33,23 +247,22 @@ public class ActivitePrincipale extends AppCompatActivity {
         btn0 = findViewById(R.id.btn0);
         btnDot = findViewById(R.id.btnDot);
 
-        // Actions
+        // Actions binding
         btnPlus = findViewById(R.id.btnPlus);
         btnMinus = findViewById(R.id.btnMinus);
         btnMultiply = findViewById(R.id.btnMultiply);
         btnDivide = findViewById(R.id.btnDivide);
         btnEqual = findViewById(R.id.btnEqual);
 
-        // Cleaning
+        // Cleaning binding
         btnClean = findViewById(R.id.btnClean);
         btnErase = findViewById(R.id.btnErase);
 
-        // Show
+        // Show binding
         show_result = findViewById(R.id.show_result);
         calc = findViewById(R.id.calc);
 
         // Numbers Click Listeners
-
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,35 +346,15 @@ public class ActivitePrincipale extends AppCompatActivity {
         btnDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] arrayCalc = calculate.split(" ");
-                String lastCalc = arrayCalc[arrayCalc.length - 1];
-                if (!lastCalc.contains(".")) {
-                    if (calculate.endsWith(" ") || calculate.isEmpty()) {
-                        calculate += "0.";
-                    } else {
-                        calculate += ".";
-                    }
-                    calc.setText(calculate);
-                }
+                pushDot();
             }
         });
 
         // Cleaning Click Listeners
-
         btnErase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!calculate.isEmpty()) {
-                    int index = calculate.length();
-                    if (calculate.endsWith(" ")) {
-                        calculate = calculate.substring(0, index - 3);
-                    } else if (calculate.endsWith("ans")) {
-                        calculate = calculate.substring(0, index - 3);
-                    } else {
-                        calculate = calculate.substring(0, index - 1);
-                    }
-                    calc.setText(calculate);
-                }
+                eraseSingle();
             }
         });
 
@@ -177,234 +370,35 @@ public class ActivitePrincipale extends AppCompatActivity {
         btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (calculate.endsWith(".")) {
-                    int index = calculate.length();
-                    calculate = calculate.substring(0, index - 1);
-                }
-                boolean is_number = false;
-                int i = 9;
-                while(i >= 0) {
-                    if (calculate.endsWith(String.valueOf(i))) {
-                        is_number = true;
-                    }
-                    i --;
-                }
-                if (!calculate.isEmpty() && is_number)  {
-                    calculate = calculate + " + ";
-                    calc.setText(calculate);
-                } else if (calculate.isEmpty() && result != 0) {
-                    calculate = "ans + ";
-                    calc.setText(calculate);
-                }
+                add();
             }
         });
 
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (calculate.endsWith(".")) {
-                    int index = calculate.length();
-                    calculate = calculate.substring(0, index - 1);
-                }
-                boolean is_number = false;
-                int i = 9;
-                while(i >= 0) {
-                    if (calculate.endsWith(String.valueOf(i))) {
-                        is_number = true;
-                    }
-                    i --;
-                }
-                if (!calculate.isEmpty() && is_number)  {
-                    calculate = calculate + " - ";
-                    calc.setText(calculate);
-                } else if (calculate.isEmpty() && result != 0) {
-                    calculate = "ans - ";
-                    calc.setText(calculate);
-                }
+                minus();
             }
         });
 
         btnMultiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (calculate.endsWith(".")) {
-                    int index = calculate.length();
-                    calculate = calculate.substring(0, index - 1);
-                }
-                boolean is_number = false;
-                int i = 9;
-                while(i >= 0) {
-                    if (calculate.endsWith(String.valueOf(i))) {
-                        is_number = true;
-                    }
-                    i --;
-                }
-                if (!calculate.isEmpty() && is_number)  {
-                    calculate = calculate + " X ";
-                    calc.setText(calculate);
-                } else if (calculate.isEmpty() && result != 0) {
-                    calculate = "ans X ";
-                    calc.setText(calculate);
-                }
+                multiply();
             }
         });
 
         btnDivide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (calculate.endsWith(".")) {
-                    int index = calculate.length();
-                    calculate = calculate.substring(0, index - 1);
-                }
-                boolean is_number = false;
-                int i = 9;
-                while(i >= 0) {
-                    if (calculate.endsWith(String.valueOf(i))) {
-                        is_number = true;
-                    }
-                    i --;
-                }
-                if (!calculate.isEmpty() && is_number)  {
-                    calculate = calculate + " / ";
-                    calc.setText(calculate);
-                } else if (calculate.isEmpty() && result != 0) {
-                    calculate = "ans / ";
-                    calc.setText(calculate);
-                }
+                divide();
             }
         });
 
         btnEqual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean canCalcul = true;
-                if (calculate.isEmpty()) {
-                    canCalcul = false;
-                    show_result.setText("0");
-                } else if (calculate.contains(" / 0")) {
-                    if (!calculate.contains(" / 0.")) {
-                        canCalcul = false;
-                        show_result.setText(getResources().getString(R.string.divide_zero));
-                    }
-                }
-                if (canCalcul) {
-                    if (calculate.endsWith(" ")) {
-                        calculate = calculate.substring(0, calculate.length() - 3);
-                    }
-                    boolean double_spotted = calculate.contains(".");
-                    String[] calcArray = calculate.split(" ");
-                    if (calcArray.length == 1) {
-                        if (double_spotted) {
-                            show_result.setText(calcArray[0]);
-                        } else {
-                            show_result.setText(String.valueOf((int) Double.parseDouble(calcArray[0])));
-                        }
-                    } else if (calcArray.length == 3) {
-                        if (calculate.contains("ans")) {
-                            switch (calcArray[1]) {
-                                case "+":
-                                    result = result + Double.parseDouble(calcArray[2]);
-                                    break;
-                                case "-":
-                                    result = result - Double.parseDouble(calcArray[2]);
-                                    break;
-                                case "X":
-                                    result = result * Double.parseDouble(calcArray[2]);
-                                    break;
-                                case "/":
-                                    result = result / Double.parseDouble(calcArray[2]);
-                                    break;
-                                default:
-                                    show_result.setText(getResources().getString(R.string.unknown_error));
-                            }
-                        } else {
-                            switch (calcArray[1]) {
-                                case "+":
-                                    result = Double.parseDouble(calcArray[0]) + Double.parseDouble(calcArray[2]);
-                                    break;
-                                case "-":
-                                    result = Double.parseDouble(calcArray[0]) - Double.parseDouble(calcArray[2]);
-                                    break;
-                                case "X":
-                                    result = Double.parseDouble(calcArray[0]) * Double.parseDouble(calcArray[2]);
-                                    break;
-                                case "/":
-                                    result = Double.parseDouble(calcArray[0]) / Double.parseDouble(calcArray[2]);
-                                    break;
-                                default:
-                                    show_result.setText(getResources().getString(R.string.unknown_error));
-                            }
-                        }
-                        if (!double_spotted || String.valueOf(result).endsWith(".0")) {
-                            show_result.setText(String.valueOf((int) result));
-                        } else {
-                            show_result.setText(String.valueOf(result));
-                        }
-                    } else {
-                        if (calculate.contains("ans")) {
-                            switch (calcArray[1]) {
-                                case "+":
-                                    result = result + Double.parseDouble(calcArray[2]);
-                                    break;
-                                case "-":
-                                    result = result - Double.parseDouble(calcArray[2]);
-                                    break;
-                                case "X":
-                                    result = result * Double.parseDouble(calcArray[2]);
-                                    break;
-                                case "/":
-                                    result = result / Double.parseDouble(calcArray[2]);
-                                    break;
-                                default:
-                                    show_result.setText(getResources().getString(R.string.unknown_error));
-                            }
-                        } else {
-                            switch (calcArray[1]) {
-                                case "+":
-                                    result = Double.parseDouble(calcArray[0]) + Double.parseDouble(calcArray[2]);
-                                    break;
-                                case "-":
-                                    result = Double.parseDouble(calcArray[0]) - Double.parseDouble(calcArray[2]);
-                                    break;
-                                case "X":
-                                    result = Double.parseDouble(calcArray[0]) * Double.parseDouble(calcArray[2]);
-                                    break;
-                                case "/":
-                                    result = Double.parseDouble(calcArray[0]) / Double.parseDouble(calcArray[2]);
-                                    break;
-                                default:
-                                    show_result.setText(getResources().getString(R.string.unknown_error));
-                            }
-                        }
-                        int k = 3;
-                        while (k < calcArray.length) {
-                            switch (calcArray[k]) {
-                                case "+":
-                                    result = result + Double.parseDouble(calcArray[k + 1]);
-                                    break;
-                                case "-":
-                                    result = result - Double.parseDouble(calcArray[k + 1]);
-                                    break;
-                                case "X":
-                                    result = result * Double.parseDouble(calcArray[k + 1]);
-                                    break;
-                                case "/":
-                                    result = result / Double.parseDouble(calcArray[k + 1]);
-                                    break;
-                                default:
-                                    show_result.setText(getResources().getString(R.string.unknown_error));
-                            }
-                            if (!double_spotted || String.valueOf(result).endsWith(".0")) {
-                                show_result.setText(String.valueOf((int) result));
-                            } else {
-                                show_result.setText(String.valueOf(result));
-                            }
-                            k += 2;
-                        }
-                    }
-                    calculate = "";
-                    calc.setText(calculate);
-                }
+                doCalculate();
             }
         });
     }
